@@ -9,7 +9,7 @@ describe Player do
     @players[:nigel] = Player.create!(:name => "Nigel", :city => "New York")
     Player.class_eval do
       include RankedModel
-      ranks :score
+      ranks :score, with_same: :city
     end
 
   }
@@ -17,6 +17,10 @@ describe Player do
   describe "setting the position of a record that already exists" do
     it "sets the rank without error" do
       expect{@players[:bob].update_attributes! :score_position => 1}.to_not raise_error
+    end
+
+    it "dup works" do
+      @players[:bob].dup.save!
     end
   end
 end
